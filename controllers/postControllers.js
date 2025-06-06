@@ -1,4 +1,4 @@
-const Post = require('../models/post');
+const Post = require('../models/postModel');
 
 exports.createPost = async (req,res)=>{
     
@@ -27,3 +27,18 @@ exports.createPost = async (req,res)=>{
     }
  }
 
+exports.getPosts = async(req,res)=>{
+    try{
+        const posts = await Post.find({}).populate("likes");
+
+        res.status(200).json({
+            success:true,
+            data:posts,
+        })
+    }catch(error){
+        res.status(500).json({
+            success:false,
+            data:"NULL"
+        })
+    }
+}
