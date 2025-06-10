@@ -8,11 +8,9 @@ exports.createLike = async(req,res)=>{
     try{
         const{post,user} = req.body;
         
-        const user1 = await bcrypt.hash(user,10);
-
 
         const newLike = new Like({
-            post,user:user1
+            post,user
         })
 
         const sentLike = await newLike.save();
