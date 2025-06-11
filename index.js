@@ -5,6 +5,11 @@ const cors = require('cors')
 const {connectDb} = require('./config/database');
 const router = require('./routers/blogRoute');
 
+//cookie parser
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
+
 
 require('dotenv').config(); 
 const PORT = process.env.PORT;
