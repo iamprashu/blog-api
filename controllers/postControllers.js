@@ -29,7 +29,14 @@ exports.createPost = async (req,res)=>{
 
 exports.getPosts = async(req,res)=>{
     try{
-        const posts = await Post.find({}).populate("likes");
+        const posts = await Post.find({}) .populate({
+        path: "likes",
+            populate: {
+                path: "user",
+                model: "User",
+                select: "email name role"  // 👈 Only these fields will be returned
+            }
+        });
 
         res.status(200).json({
             success:true,
