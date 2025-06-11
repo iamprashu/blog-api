@@ -1,82 +1,11 @@
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
-// exports.auth = (req,res,next) =>{ //next is to move to next middleware
-//     try{
-//         const token = req.body.token
-
-//         if(!token){
-//             return res.status(401).json({
-//                 success:false,
-//                 message:"Token Missing Please Login"
-//             })
-//         }
-
-//         //verify tht token
-
-//         try{
-//             const decode = jwt.verify(token,process.env.JWT_SECRET);
-//             req.user = decode; // taki aage ke middleware me use kar pau
-
-//         }catch(error){
-//             return res.json({
-//                 success:false,
-//                 message:"Token is Invalid"
-//             })
-
-//         }
-
-//         next();
-
-//     }catch(error){
-
-//         return res.status(401).json({
-//             status:false,
-//             message:"Someting went wront at api token"
-//         })
-
-//     }
-// }
-
-// exports.isStudent = (req,res,next)=>{
-//     try{
-//         if(req.user.role !== "student"){
-//             return res.status(401).json({
-//                 success:false,
-//                 message:"This is a protected route for student only"
-//             })
-//         }
-//         next();
-
-//     }catch(error){
-//         return res.status(500).json({
-//             success:false,message:"Role of user error"
-//         })
-//     }
-// }
-
-// exports.isAdmin = (req,res,next)=>{
-//     try{
-//         if(req.user.role !== "admin"){
-//             return res.status(401).json({
-//                 success:false,
-//                 message:"This is a protected route for Admin only"
-//             })
-//         }
-//         next();
-
-//     }catch(error){
-//         return res.status(500).json({
-//             success:false,message:"Role of Admin error"
-//         })
-//     }
-// }
-
-
 exports.auth = (req,res,next)=>{
 
    try{
-     const token = req.body.token;
+    // console.log(req);
+     const token = req.cookies.AuthToken;
 
      if(!token){
         return res.status(400).json({
@@ -86,9 +15,9 @@ exports.auth = (req,res,next)=>{
      }
 
      try{
-        const verifyToken = jwt.verify(token,process.env.JWT_SECRET);
-        req.user = verifyToken; 
-        // console.log(verifyToken);
+        const verifyToken = jwt.verify(token,process.env.JWT_SECRET); // decrypted user data
+        req.user = verifyToken; // user data added to the request
+        
      }catch(error){
         console.log(error)
      }
@@ -127,6 +56,7 @@ exports.isAdmin = (req,res,next)=>{
 exports.isStudent = (req,res,next)=>{
     try{
         const role = req.user.role;
+        // console.log(req.user);
 
         if(role !== "student"){
             return res.status(404).json({
