@@ -5,10 +5,9 @@ const likeModel = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Post"
     },
-
     user:{
-        type:String,
-        required:true
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
     }
 });
 
